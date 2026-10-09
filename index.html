@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>pixel-pet · demo</title>
+<style>
+  :root{--bg:#f6f3ee;--fg:#1d1a26;--card:#fff;--line:#ddd6e6;--code:#efeaf5;--acc:#6b4fd8}
+  @media (prefers-color-scheme:dark){:root{--bg:#14121c;--fg:#f0ecf7;--card:#201c2c;--line:#37304a;--code:#2a2438;--acc:#a28bff}}
+  body{font:15px/1.5 system-ui,sans-serif;max-width:760px;margin:0 auto;padding:20px 16px;background:var(--bg);color:var(--fg)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+  button,select{font:inherit;padding:5px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
+  button.main{background:var(--acc);color:#fff;border:0}
+  #lbl{font-size:.9rem;opacity:.8;min-height:1.4em}
+  #log{font:12px ui-monospace,monospace;background:var(--code);padding:8px;border-radius:8px;min-height:60px;white-space:pre}
+</style>
+</head>
+<body>
+  <h1>&lt;pixel-pet&gt;</h1>
+  <div class="card" style="text-align:center">
+    <pixel-pet id="pet" src="/assets/cat.json" scale="1" sleep-after="20"></pixel-pet>
+    <div id="lbl"></div>
+    <div class="row" style="justify-content:center">
+      <label>Mascota <select id="pack"><option value="cat">Cat</option><option value="elegant-cat">Elegant cat</option></select></label>
+      <label>Idioma <select id="lang"><option value="es">Español</option><option value="en">English</option></select></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <b>Simular un turno de chat con RAG</b>
+    <div class="row">
+      <button class="main" data-flow="docs">Con documentos</button>
+      <button class="main" data-flow="nodocs">Sin resultados</button>
+      <button class="main" data-flow="error">Error</button>
+    </div>
+    <b>Forzar un estado</b>
+    <div class="row" id="states"></div>
+    <div id="log"></div>
+  </div>
+
+  <script type="module">
+    import '/src/define.ts';
+    const $ = (s) => document.querySelector(s);
+    const pet = $('#pet'), log = $('#log'), lines = [];
+    const showLabel = async () => { await pet.updateComplete; $('#lbl').textContent = pet.shadowRoot.querySelector('.sprite').getAttribute('aria-label'); };
+    pet.addEventListener('statechange', e => {
+      lines.push(`${e.detail.from ?? '·'} → ${e.detail.to}`); if (lines.length > 6) lines.shift();
+      log.textContent = lines.join('\n'); showLabel();
+    });
+    pet.addEventListener('ready', () => {
+      pet.setState('greet', {now: true});
+      $('#states').replaceChildren(...Object.keys(pet.manifest.states).map(n => {
+        const b = document.createElement('button'); b.textContent = n; b.onclick = () => pet.setState(n, {now: true}); return b;
+      }));
+    });
+    $('#pack').onchange = e => { pet.src = `/assets/${e.target.value}.json`; };
+    $('#lang').onchange = e => { pet.lang = e.target.value; pet.requestUpdate(); showLabel(); };
+
+    const at = (ms, fn) => setTimeout(fn, ms);
+    const tokens = (n, done) => { let i = 0; const t = setInterval(() => { pet.feed('token'); if (++i >= n) { clearInterval(t); done(); } }, 150); };
+    document.querySelectorAll('[data-flow]').forEach(b => b.onclick = () => {
+      const f = b.dataset.flow; pet.feed('send');
+      at(1000, () => pet.feed('retrieving'));
+      if (f === 'error') { at(2600, () => pet.feed('error')); at(4600, () => pet.feed('done')); return; }
+      at(2800, () => pet.feed('score', f === 'docs' ? 0.92 : 0.2));
+      at(4400, () => tokens(12, () => pet.feed('done', {cited: f === 'docs'})));
+    });
+  </script>
+</body>
+</html>
