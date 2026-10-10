@@ -30,6 +30,8 @@
     "test": "vitest run",
     "build": "tsc --noEmit && vite build && vite build -c vite.bundle.config.ts && tsc -p tsconfig.build.json",
     "preview": "vite preview",
+    "release-it": "release-it",
+    "release-it-next": "release-it --preRelease=next",
     "prepublishOnly": "bun run build"
   },
   "keywords": ["web-component", "lit", "typescript", "sprite", "pixel-art", "chatbot", "rag", "css-animation", "steps"],
@@ -42,6 +44,7 @@
     "lit": "^3.3.3",
     "oxfmt": "^0.72.0",
     "oxlint": "^1.87.0",
+    "release-it": "^21",
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
     "vitest": "^5.0.3"
