@@ -22,6 +22,7 @@
   "sideEffects": ["./dist/define.js", "./dist/pixel-pet.bundle.js"],
   "scripts": {
     "dev": "vite",
+    "demo": "vite --open",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint src",
     "format": "oxfmt src vite.config.ts vite.bundle.config.ts vitest.config.ts",

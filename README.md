@@ -36,6 +36,31 @@ pet.addEventListener('statechange', e => console.log(e.detail.from, e.detail.to)
 pet.feed('score', 0.92);
 ```
 
+### Uso mínimo con un chat
+
+```html
+<input id="msg" placeholder="Escribe una pregunta">
+<button id="send">Enviar</button>
+<pixel-pet id="pet" src="/assets/cat.json" sleep-after="30"></pixel-pet>
+<script type="module">
+  import 'pixel-pet/define';
+  const pet = document.querySelector('#pet');
+  const msg = document.querySelector('#msg');
+  msg.addEventListener('input', () => pet.feed('typing'));
+  document.querySelector('#send').addEventListener('click', () => {
+    pet.feed('send');
+    pet.feed('retrieving');
+    pet.feed('score', 0.9);
+    // Por cada fragmento de respuesta que llega del modelo:
+    pet.feed('token');
+    // Al terminar; cited:true si la respuesta cita una fuente:
+    pet.feed('done', {cited: true});
+  });
+</script>
+```
+
+Para ver el resto de eventos y estados, ejecuta `bun run demo` en el repositorio.
+
 ## Estados incluidos
 
 Cada mascota trae 20 estados de 12 frames. Los ids son neutros; el texto visible sale de `label`.

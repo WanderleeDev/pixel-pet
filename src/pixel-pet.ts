@@ -8,7 +8,7 @@ const DEFAULT_MAP: Required<Pick<PetEventMap, PetEventName>> = {
   send: 'thinking',
   retrieving: 'searching',
   score: 'idea',
-  token: 'talking',
+  token: ['talking', {now: true}],
   cite: 'cite',
   done: 'idle',
   error: ['error', {now: true}],
