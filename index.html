@@ -76,7 +76,7 @@
     <section class="card">
       <h2>Mascota</h2>
       <div class="stage">
-        <pixel-pet id="pet" src="/assets/cat.json" scale="1" sleep-after="20"></pixel-pet>
+        <pixel-pet id="pet" src="./cat.json" scale="1" sleep-after="20"></pixel-pet>
       </div>
       <div id="lbl"></div>
       <div class="row">
@@ -129,15 +129,15 @@
 
       <div class="panel" id="p-vanilla" role="tabpanel">
         <pre class="code"><code></code></pre>
-        <textarea hidden>&lt;input id="msg" placeholder="Escribe una pregunta"&gt;
-<button id="send">Enviar</button>
-<pixel-pet id="pet" src="/assets/cat.json" sleep-after="30"></pixel-pet>
-<script type="module">
-  import 'pixel-pet/define';
+        <textarea hidden>&amp;lt;input id="msg" placeholder="Escribe una pregunta"&amp;gt;
+&lt;button id="send"&gt;Enviar&lt;/button&gt;
+&lt;pixel-pet id="pet" src="/assets/cat.json" sleep-after="30"&gt;&lt;/pixel-pet&gt;
+&lt;script type="module"&gt;
+  import '@wanderleedev/pixel-pet/define';
   const pet = document.querySelector('#pet');
   const msg = document.querySelector('#msg');
-  msg.addEventListener('input', () => pet.feed('typing'));
-  document.querySelector('#send').addEventListener('click', () => {
+  msg.addEventListener('input', () =&gt; pet.feed('typing'));
+  document.querySelector('#send').addEventListener('click', () =&gt; {
     pet.feed('send');
     pet.feed('retrieving');
     pet.feed('score', 0.9);
@@ -146,20 +146,20 @@
     // Al terminar; cited: true si la respuesta cita una fuente:
     pet.feed('done', {cited: true});
   });
-</script></textarea>
+&lt;/script&gt;</textarea>
       </div>
 
       <div class="panel" id="p-react" role="tabpanel" hidden>
         <pre class="code"><code></code></pre>
-        <textarea hidden>import 'pixel-pet/define';
+        <textarea hidden>import '@wanderleedev/pixel-pet/define';
 import {useRef, useState} from 'react';
-import type {PixelPet} from 'pixel-pet';
+import type {PixelPet} from '@wanderleedev/pixel-pet';
 
 export function Chat() {
-  const pet = useRef<PixelPet>(null);
+  const pet = useRef&lt;PixelPet&gt;(null);
   const [text, setText] = useState('');
 
-  const send = () => {
+  const send = () =&gt; {
     pet.current?.feed('send');
     pet.current?.feed('retrieving');
     pet.current?.feed('score', 0.9);
@@ -167,14 +167,14 @@ export function Chat() {
   };
 
   return (
-    <>
-      <input value={text} onChange={e => {
+    &lt;&gt;
+      &lt;input value={text} onChange={e =&gt; {
         setText(e.target.value);
         pet.current?.feed('typing');
-      }} />
-      <button onClick={send}>Enviar</button>
-      <pixel-pet ref={pet} src="/assets/cat.json" sleep-after="30" />
-    </>
+      }} /&gt;
+      &lt;button onClick={send}&gt;Enviar&lt;/button&gt;
+      &lt;pixel-pet ref={pet} src="/assets/cat.json" sleep-after="30" /&gt;
+    &lt;/&gt;
   );
 }</textarea>
         <p class="note">React 19 pasa las propiedades de custom elements directamente. En React 18 usa <code>@lit/react</code>.</p>
@@ -185,42 +185,42 @@ export function Chat() {
         <textarea hidden>// vite.config.ts
 export default defineConfig({
   plugins: [vue({
-    template: {compilerOptions: {isCustomElement: tag => tag === 'pixel-pet'}},
+    template: {compilerOptions: {isCustomElement: tag =&gt; tag === 'pixel-pet'}},
   })],
 });
 
-<!-- Chat.vue -->
-<script setup lang="ts">
-import 'pixel-pet/define';
+&lt;!-- Chat.vue --&gt;
+&lt;script setup lang="ts"&gt;
+import '@wanderleedev/pixel-pet/define';
 import {ref, useTemplateRef} from 'vue';
-import type {PixelPet} from 'pixel-pet';
+import type {PixelPet} from '@wanderleedev/pixel-pet';
 
-const pet = useTemplateRef<PixelPet>('pet');
+const pet = useTemplateRef&lt;PixelPet&gt;('pet');
 const text = ref('');
 
-const onInput = () => pet.value?.feed('typing');
-const send = () => {
+const onInput = () =&gt; pet.value?.feed('typing');
+const send = () =&gt; {
   pet.value?.feed('send');
   pet.value?.feed('retrieving');
   pet.value?.feed('score', 0.9);
   pet.value?.feed('done', {cited: true});
 };
-</script>
+&lt;/script&gt;
 
-<template>
-  <input v-model="text" @input="onInput" />
-  <button @click="send">Enviar</button>
-  <pixel-pet ref="pet" src="/assets/cat.json" sleep-after="30" />
-</template></textarea>
+&lt;template&gt;
+  &lt;input v-model="text" @input="onInput" /&gt;
+  &lt;button @click="send"&gt;Enviar&lt;/button&gt;
+  &lt;pixel-pet ref="pet" src="/assets/cat.json" sleep-after="30" /&gt;
+&lt;/template&gt;</textarea>
         <p class="note">Vue necesita <code>isCustomElement</code> para no tratar <code>pixel-pet</code> como componente propio.</p>
       </div>
 
       <div class="panel" id="p-svelte" role="tabpanel" hidden>
         <pre class="code"><code></code></pre>
-        <textarea hidden><!-- Chat.svelte -->
-<script lang="ts">
-  import 'pixel-pet/define';
-  import type {PixelPet} from 'pixel-pet';
+        <textarea hidden>&lt;!-- Chat.svelte --&gt;
+&lt;script lang="ts"&gt;
+  import '@wanderleedev/pixel-pet/define';
+  import type {PixelPet} from '@wanderleedev/pixel-pet';
 
   let pet: PixelPet | undefined = $state();
   let text = $state('');
@@ -231,18 +231,18 @@ const send = () => {
     pet?.feed('score', 0.9);
     pet?.feed('done', {cited: true});
   }
-</script>
+&lt;/script&gt;
 
-<input bind:value={text} oninput={() => pet?.feed('typing')} />
-<button onclick={send}>Enviar</button>
-<pixel-pet bind:this={pet} src="/assets/cat.json" sleep-after="30"></pixel-pet></textarea>
+&lt;input bind:value={text} oninput={() =&gt; pet?.feed('typing')} /&gt;
+&lt;button onclick={send}&gt;Enviar&lt;/button&gt;
+&lt;pixel-pet bind:this={pet} src="/assets/cat.json" sleep-after="30"&gt;&lt;/pixel-pet&gt;</textarea>
         <p class="note">Svelte 5 funciona directo con custom elements, usando <code>bind:this</code> y <code>$state</code>.</p>
       </div>
 
       <div class="panel" id="p-angular" role="tabpanel" hidden>
         <pre class="code"><code></code></pre>
         <textarea hidden>// main.ts
-import 'pixel-pet/define';
+import '@wanderleedev/pixel-pet/define';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {ChatComponent} from './app/chat.component';
 
@@ -250,19 +250,19 @@ bootstrapApplication(ChatComponent);
 
 // app/chat.component.ts
 import {Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, viewChild} from '@angular/core';
-import type {PixelPet} from 'pixel-pet';
+import type {PixelPet} from '@wanderleedev/pixel-pet';
 
 @Component({
   selector: 'app-chat',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   template: `
-    <input (input)="pet().nativeElement.feed('typing')" />
-    <button (click)="send()">Enviar</button>
-    <pixel-pet #pet src="/assets/cat.json" sleep-after="30"></pixel-pet>
+    &lt;input (input)="pet().nativeElement.feed('typing')" /&gt;
+    &lt;button (click)="send()"&gt;Enviar&lt;/button&gt;
+    &lt;pixel-pet #pet src="/assets/cat.json" sleep-after="30"&gt;&lt;/pixel-pet&gt;
   `,
 })
 export class ChatComponent {
-  pet = viewChild.required<ElementRef<PixelPet>>('pet');
+  pet = viewChild.required&lt;ElementRef&lt;PixelPet&gt;&gt;('pet');
 
   send() {
     const el = this.pet().nativeElement;
@@ -280,102 +280,24 @@ export class ChatComponent {
         <textarea hidden>---
 // src/pages/index.astro
 ---
-<pixel-pet id="pet" src="/assets/cat.json" sleep-after="30"></pixel-pet>
-<button id="send">Enviar</button>
+&lt;pixel-pet id="pet" src="/assets/cat.json" sleep-after="30"&gt;&lt;/pixel-pet&gt;
+&lt;button id="send"&gt;Enviar&lt;/button&gt;
 
-<script>
-  import 'pixel-pet/define';
+&lt;script&gt;
+  import '@wanderleedev/pixel-pet/define';
   const pet = document.querySelector('#pet');
-  document.querySelector('#send').addEventListener('click', () => {
+  document.querySelector('#send').addEventListener('click', () =&gt; {
     pet.feed('send');
     pet.feed('retrieving');
     pet.feed('score', 0.9);
     pet.feed('done', {cited: true});
   });
-</script></textarea>
+&lt;/script&gt;</textarea>
         <p class="note">Astro renderiza en servidor: el componente solo funciona en el cliente, así que usa el script del navegador.</p>
       </div>
     </section>
   </main>
 
-  <script type="module">
-    import '/src/define.ts';
-
-    /* resaltado ligero sin dependencias: una sola pasada para no romper spans anidados */
-    const TOKEN = /(?<com>\/\/[^\n]*|<!--[\s\S]*?-->)|(?<str>'[^'\n]*'|"[^"\n]*"|`[^`]*`)|(?<lt><\/?)(?<tag>[a-zA-Z][\w-]*)|(?<attr>[a-zA-Z@:#][\w:-]*)(?==)|(?<kw>\b(?:import|from|export|const|let|function|return|new|class|extends|default|await|async|null|true|false|type|interface)\b)|(?<fn>\b(?:feed|setState|querySelector|addEventListener|useRef|useTemplateRef|viewChild)\b)/g;
-    const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const span = (cls, s) => `<span class="${cls}">${esc(s)}</span>`;
-    const highlight = src => {
-      let out = '', last = 0, m;
-      TOKEN.lastIndex = 0;
-      while ((m = TOKEN.exec(src))) {
-        const g = m.groups;
-        out += esc(src.slice(last, m.index));
-        last = m.index + m[0].length;
-        if (g.com) out += span('tok-com', g.com);
-        else if (g.str) out += span('tok-str', g.str);
-        else if (g.tag) out += esc(g.lt) + span('tok-tag', g.tag);
-        else if (g.attr) out += span('tok-attr', g.attr);
-        else if (g.kw) out += span('tok-kw', g.kw);
-        else if (g.fn) out += span('tok-fn', g.fn);
-      }
-      return out + esc(src.slice(last));
-    };
-    document.querySelectorAll('.panel').forEach(p => {
-      p.querySelector('code').innerHTML = highlight(p.querySelector('textarea').value);
-    });
-
-    const $ = (s) => document.querySelector(s);
-    const pet = $('#pet'), log = $('#log'), lines = [];
-    const showLabel = async () => { await pet.updateComplete; $('#lbl').textContent = pet.shadowRoot.querySelector('.sprite').getAttribute('aria-label'); };
-    pet.addEventListener('statechange', e => {
-      lines.push(`${e.detail.from ?? '·'} → ${e.detail.to}`); if (lines.length > 6) lines.shift();
-      log.textContent = lines.join('\n'); showLabel();
-    });
-    pet.addEventListener('ready', () => {
-      pet.setState('greet', {now: true});
-      $('#states').replaceChildren(...Object.keys(pet.manifest.states).map(n => {
-        const b = document.createElement('button'); b.textContent = n; b.onclick = () => pet.setState(n, {now: true}); return b;
-      }));
-    });
-
-    /* selectores accesibles */
-    const dropdown = (root, onChange) => {
-      const btn = root.querySelector('.dd-btn'), list = root.querySelector('.dd-list');
-      const opts = [...list.querySelectorAll('[role=option]')];
-      const close = () => { root.dataset.open = 'false'; btn.setAttribute('aria-expanded', 'false'); };
-      btn.onclick = () => {
-        const open = root.dataset.open !== 'true';
-        root.dataset.open = String(open);
-        btn.setAttribute('aria-expanded', String(open));
-      };
-      opts.forEach(o => o.onclick = () => {
-        opts.forEach(x => x.setAttribute('aria-selected', String(x === o)));
-        root.querySelector('.dd-label').textContent = o.textContent;
-        close();
-        onChange(o.dataset.value);
-      });
-      document.addEventListener('click', e => { if (!root.contains(e.target)) close(); });
-      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-    };
-    dropdown($('#dd-pack'), v => { pet.src = `/assets/${v}.json`; });
-    dropdown($('#dd-lang'), v => { pet.lang = v; pet.requestUpdate(); showLabel(); });
-
-    const at = (ms, fn) => setTimeout(fn, ms);
-    const tokens = (n, done) => { let i = 0; const t = setInterval(() => { pet.feed('token'); if (++i >= n) { clearInterval(t); done(); } }, 150); };
-    document.querySelectorAll('[data-flow]').forEach(b => b.onclick = () => {
-      const f = b.dataset.flow; pet.feed('send');
-      at(1000, () => pet.feed('retrieving'));
-      if (f === 'error') { at(2600, () => pet.feed('error')); at(4600, () => pet.feed('done')); return; }
-      at(2800, () => pet.feed('score', f === 'docs' ? 0.92 : 0.2));
-      at(4400, () => tokens(12, () => pet.feed('done', {cited: f === 'docs'})));
-    });
-
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(t => t.onclick = () => {
-      tabs.forEach(x => x.setAttribute('aria-selected', String(x === t)));
-      document.querySelectorAll('.panel').forEach(p => p.hidden = p.id !== t.getAttribute('aria-controls'));
-    });
-  </script>
+  <script type="module" src="./demo/main.ts"></script>
 </body>
 </html>

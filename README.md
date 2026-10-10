@@ -12,11 +12,11 @@ Web component (**Lit + TypeScript**) que anima una mascota pixel art con **CSS `
 ## Instalación
 
 ```bash
-bun add pixel-pet lit      # o: npm i pixel-pet lit
+bun add @wanderleedev/pixel-pet lit      # o: npm i @wanderleedev/pixel-pet lit
 ```
 
 ```js
-import 'pixel-pet/define';   // registra <pixel-pet>
+import '@wanderleedev/pixel-pet/define';   // registra <pixel-pet>
 ```
 
 ```html
@@ -28,8 +28,8 @@ Sin bundler: `<script src="pixel-pet.bundle.js"></script>`. Para otro nombre de 
 ### TypeScript
 
 ```ts
-import 'pixel-pet/define';
-import type {PetManifest} from 'pixel-pet';
+import '@wanderleedev/pixel-pet/define';
+import type {PetManifest} from '@wanderleedev/pixel-pet';
 
 const pet = document.querySelector('pixel-pet')!;     // tipado como PixelPet
 pet.addEventListener('statechange', e => console.log(e.detail.from, e.detail.to));
@@ -43,7 +43,7 @@ pet.feed('score', 0.92);
 <button id="send">Enviar</button>
 <pixel-pet id="pet" src="/assets/cat.json" sleep-after="30"></pixel-pet>
 <script type="module">
-  import 'pixel-pet/define';
+  import '@wanderleedev/pixel-pet/define';
   const pet = document.querySelector('#pet');
   const msg = document.querySelector('#msg');
   msg.addEventListener('input', () => pet.feed('typing'));
@@ -154,10 +154,11 @@ npm pack --dry-run  # qué se publicaría
 ## Publicar
 
 ```bash
-npm login
-npm version patch
-npm publish        # si el nombre es scoped: npm publish --access public
+bun run release-it         # versión estable: valida, crea el tag vX.Y.Z y publica
+bun run release-it-next    # prerelease: publica con el dist-tag `next`
 ```
+
+El workflow de GitHub publica en npm al detectar el tag, después de pasar lint, formato, typecheck, tests y build. Necesita el secreto `NPM_TOKEN` en el repositorio.
 
 ## Licencia
 
