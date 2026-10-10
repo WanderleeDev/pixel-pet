@@ -1,6 +1,6 @@
 {
   "name": "@wanderleedev/pixel-pet",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Web component (Lit + TypeScript) que anima mascotas pixel art con CSS steps() a partir de una hoja de sprites y un manifiesto. Pensado para asistentes y chats.",
   "type": "module",
   "main": "./dist/index.js",
@@ -18,8 +18,16 @@
     "./bundle": "./dist/pixel-pet.bundle.js",
     "./assets/*": "./assets/*"
   },
-  "files": ["dist", "assets", "README.md", "LICENSE"],
-  "sideEffects": ["./dist/define.js", "./dist/pixel-pet.bundle.js"],
+  "files": [
+    "dist",
+    "assets",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "./dist/define.js",
+    "./dist/pixel-pet.bundle.js"
+  ],
   "scripts": {
     "dev": "vite",
     "demo": "vite --open",
@@ -36,7 +44,17 @@
     "release-it-next": "release-it --preRelease=next",
     "prepublishOnly": "bun run build"
   },
-  "keywords": ["web-component", "lit", "typescript", "sprite", "pixel-art", "chatbot", "rag", "css-animation", "steps"],
+  "keywords": [
+    "web-component",
+    "lit",
+    "typescript",
+    "sprite",
+    "pixel-art",
+    "chatbot",
+    "rag",
+    "css-animation",
+    "steps"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
