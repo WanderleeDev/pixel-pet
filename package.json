@@ -36,6 +36,10 @@
   },
   "keywords": ["web-component", "lit", "typescript", "sprite", "pixel-art", "chatbot", "rag", "css-animation", "steps"],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WanderleeDev/pixel-pet.git"
+  },
   "peerDependencies": {
     "lit": "^3.0.0"
   },
